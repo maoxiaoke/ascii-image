@@ -1,9 +1,9 @@
-import ASCIIImageGenerator from './components/ascii-art-generator';
+import { AsciiArtGenerator } from './components/ascii-art-generator';
 
 export default function Home() {
   return (
     <main>
-      <ASCIIImageGenerator />
+      <AsciiArtGenerator />
     </main>
   );
 }
