@@ -29,7 +29,6 @@ export function AsciiArtGenerator() {
     toggleWebcam,
   } = useWebcam({ isWebcam, setIsWebcam, setUploadedImage })
 
-
   const {
     canvasRef,
     isProcessing,
@@ -61,7 +60,13 @@ export function AsciiArtGenerator() {
         <Button onClick={triggerFileInput} variant="outline" size="icon" title="Upload Image">
           <Upload className="h-4 w-4" />
         </Button>
-        <Button onClick={downloadImage} variant="outline" size="icon" disabled={!uploadedImage && !isWebcam} title="Download ASCII Art">
+        <Button 
+          onClick={downloadImage} 
+          variant="outline" 
+          size="icon" 
+          disabled={isProcessing || isWebcam}
+          title="Download ASCII Art"
+        >
           <Download className="h-4 w-4" />
         </Button>
         <input
