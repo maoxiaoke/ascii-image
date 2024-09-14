@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react'
 import { applyASCIIEffect } from '@/app/lib/ascii-utils'
+import type Webcam from 'react-webcam'
 
 interface UseAsciiArtProps {
   isWebcam: boolean
@@ -7,7 +8,7 @@ interface UseAsciiArtProps {
   isImageLoaded: boolean
   canvasWidth: number
   FIXED_HEIGHT: number
-  webcamRef: React.RefObject<any>
+  webcamRef: React.RefObject<Webcam>
   setCanvasWidth: React.Dispatch<React.SetStateAction<number>>
 }
 

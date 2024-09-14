@@ -84,7 +84,6 @@ export function AsciiArtGenerator() {
   const {
     canvasRef,
     isProcessing,
-    applyASCIIEffect,
     downloadImage,
   } = useAsciiArt({ isWebcam, uploadedImage, isImageLoaded, canvasWidth, FIXED_HEIGHT, webcamRef, setCanvasWidth })
 
