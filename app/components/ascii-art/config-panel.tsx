@@ -5,20 +5,25 @@ import { Button } from "../ui/button"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { Label } from "../ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
+import { Switch } from "../ui/switch"
 import { ASCIICharSet } from '../../lib/ascii-utils'
 
 interface ConfigPanelProps {
   colorMode: 'monotone' | 'duotone' | 'colorful'
   charSet: ASCIICharSet
+  isDense: boolean
   onColorModeChange: (value: 'monotone' | 'duotone' | 'colorful') => void
   onCharSetChange: (value: ASCIICharSet) => void
+  onDensityChange: (value: boolean) => void
 }
 
 export function ConfigPanel({
   colorMode,
   charSet,
+  isDense,
   onColorModeChange,
-  onCharSetChange
+  onCharSetChange,
+  onDensityChange
 }: ConfigPanelProps) {
   const [isOpen, setIsOpen] = useState(false)
   const panelRef = useRef<HTMLDivElement>(null)
@@ -109,6 +114,14 @@ export function ConfigPanel({
                     <SelectItem value="symbols">Symbols</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="density" className="flex-grow">Dense Characters</Label>
+                <Switch
+                  id="density"
+                  checked={isDense}
+                  onCheckedChange={onDensityChange}
+                />
               </div>
             </div>
           </motion.div>

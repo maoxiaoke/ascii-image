@@ -12,7 +12,8 @@ const ASCII_CHAR_SETS: Record<ASCIICharSet, string[]> = {
 export function applyASCIIEffect(
   canvas: HTMLCanvasElement, 
   colorMode: ColorMode = 'colorful',
-  charSet: ASCIICharSet = 'standard'
+  charSet: ASCIICharSet = 'standard',
+  isDense: boolean = true
 ) {
   const ctx = canvas.getContext('2d', { willReadFrequently: true })
   if (ctx && canvas.width > 0 && canvas.height > 0) {
@@ -28,9 +29,10 @@ export function applyASCIIEffect(
       asciiCtx.fillRect(0, 0, canvas.width, canvas.height)
       
       const chars = ASCII_CHAR_SETS[charSet]
+      const spacing = isDense ? { x: 3, y: 5 } : { x: 6, y: 10 }
       
-      for (let y = 0; y < canvas.height; y += 5) {
-        for (let x = 0; x < canvas.width; x += 3) {
+      for (let y = 0; y < canvas.height; y += spacing.y) {
+        for (let x = 0; x < canvas.width; x += spacing.x) {
           const index = (y * canvas.width + x) * 4
           const [r, g, b] = data.slice(index, index + 3)
           const brightness = (r + g + b) / 3
@@ -52,7 +54,7 @@ export function applyASCIIEffect(
           }
           
           asciiCtx.fillStyle = fillStyle
-          asciiCtx.font = '5px monospace'
+          asciiCtx.font = `${spacing.y}px monospace`
           asciiCtx.fillText(char, x, y)
         }
       }

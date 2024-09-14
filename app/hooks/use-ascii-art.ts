@@ -12,9 +12,21 @@ interface UseAsciiArtProps {
   setCanvasWidth: React.Dispatch<React.SetStateAction<number>>
   colorMode: 'monotone' | 'duotone' | 'colorful'
   charSet: ASCIICharSet
+  isDense: boolean  // Add this line
 }
 
-export function useAsciiArt({ isWebcam, uploadedImage, isImageLoaded, canvasWidth, FIXED_HEIGHT, webcamRef, setCanvasWidth, colorMode, charSet }: UseAsciiArtProps) {
+export function useAsciiArt({
+  isWebcam,
+  uploadedImage,
+  isImageLoaded,
+  canvasWidth,
+  FIXED_HEIGHT,
+  webcamRef,
+  setCanvasWidth,
+  colorMode,
+  charSet,
+  isDense  // Add this line
+}: UseAsciiArtProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [isProcessing, setIsProcessing] = useState(false)
   const [originalImage, setOriginalImage] = useState<HTMLImageElement | null>(null)
@@ -30,13 +42,13 @@ export function useAsciiArt({ isWebcam, uploadedImage, isImageLoaded, canvasWidt
           const ctx = canvas.getContext('2d')
           if (ctx) {
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
-            applyASCIIEffect(canvas, colorMode, charSet) // Pass colorMode and charSet here
+            applyASCIIEffect(canvas, colorMode, charSet, isDense) // Update this line
           }
         }
       }, 100)
       return () => clearInterval(interval)
     }
-  }, [isWebcam, colorMode, charSet]) // Add colorMode and charSet to dependencies
+  }, [isWebcam, colorMode, charSet, isDense]) // Add isDense to dependencies
 
   useEffect(() => {
     if (uploadedImage && isImageLoaded) {
@@ -62,11 +74,11 @@ export function useAsciiArt({ isWebcam, uploadedImage, isImageLoaded, canvasWidt
         const ctx = canvas.getContext('2d')
         if (ctx) {
           ctx.drawImage(originalImage, 0, 0, canvasWidth, FIXED_HEIGHT)
-          applyASCIIEffect(canvas, colorMode, charSet) // Pass colorMode and charSet here
+          applyASCIIEffect(canvas, colorMode, charSet, isDense) // Update this line
         }
       }
     }
-  }, [originalImage, canvasWidth, FIXED_HEIGHT, colorMode, charSet]) // Add colorMode and charSet to dependencies
+  }, [originalImage, canvasWidth, FIXED_HEIGHT, colorMode, charSet, isDense]) // Add isDense to dependencies
 
   const downloadImage = () => {
     const canvas = canvasRef.current

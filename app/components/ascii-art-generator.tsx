@@ -71,6 +71,7 @@ export function AsciiArtGenerator() {
   const [canvasWidth, setCanvasWidth] = useState(640)
   const [colorMode, setColorMode] = useState<'monotone' | 'duotone' | 'colorful'>('colorful')
   const [charSet, setCharSet] = useState<ASCIICharSet>('standard')
+  const [isDense, setIsDense] = useState(true)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const {
@@ -98,7 +99,8 @@ export function AsciiArtGenerator() {
     webcamRef, 
     setCanvasWidth, 
     colorMode,
-    charSet  // Add this line
+    charSet,
+    isDense  // Add this line
   })
 
   const triggerFileInput = () => fileInputRef.current?.click()
@@ -109,6 +111,10 @@ export function AsciiArtGenerator() {
 
   const handleCharSetChange = (value: ASCIICharSet) => {
     setCharSet(value)
+  }
+
+  const handleDensityChange = (value: boolean) => {
+    setIsDense(value)
   }
 
   return (
@@ -181,8 +187,10 @@ export function AsciiArtGenerator() {
             <ConfigPanel
               colorMode={colorMode}
               charSet={charSet}
+              isDense={isDense}
               onColorModeChange={handleColorModeChange}
               onCharSetChange={handleCharSetChange}
+              onDensityChange={handleDensityChange}
             />
           </div>
         </div>
