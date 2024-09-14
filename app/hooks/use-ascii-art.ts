@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useCallback } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { applyASCIIEffect, ASCIICharSet } from '@/app/lib/ascii-utils'
 import type Webcam from 'react-webcam'
 

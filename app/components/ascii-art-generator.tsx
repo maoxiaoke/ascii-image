@@ -9,8 +9,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip"
-import { RadioGroup, RadioGroupItem } from "./ui/radio-group"
-import { Label } from "./ui/label"
 import { useAsciiArt } from '../hooks/use-ascii-art'
 import { useWebcam } from '../hooks/use-webcam'
 import { useImageUpload } from '@/app/hooks/use-image-upload'
@@ -18,7 +16,6 @@ import { WebcamView } from './ascii-art/webcam-view'
 import { CanvasView } from './ascii-art/canvas-view'
 import { ProcessingOverlay } from './ascii-art/processing-overlay'
 import { cn } from "../lib/utils"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 import { ASCIICharSet } from '../lib/ascii-utils'
 import { ConfigPanel } from './ascii-art/config-panel'
 
