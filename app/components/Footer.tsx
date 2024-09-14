@@ -9,9 +9,9 @@ export default function Footer() {
           <Twitter className="w-4 h-4 mr-1" />
           <span>Twitter</span>
         </Link>
-        <Link href="https://github.com/xiaokedada" className="hover:text-gray-900 flex items-center">
+        <Link href="https://github.com/maoxiaoke/ascii-image" className="hover:text-gray-900 flex items-center">
           <Github className="w-4 h-4 mr-1" />
-          <span>GitHub</span>
+          <span>Source Code</span>
         </Link>
         <Link href="https://nazha.co" className="hover:text-gray-900 flex items-center">
           <Globe className="w-4 h-4 mr-1" />
