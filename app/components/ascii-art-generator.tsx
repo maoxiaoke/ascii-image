@@ -9,13 +9,18 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip"
+import { RadioGroup, RadioGroupItem } from "./ui/radio-group"
+import { Label } from "./ui/label"
 import { useAsciiArt } from '../hooks/use-ascii-art'
 import { useWebcam } from '../hooks/use-webcam'
 import { useImageUpload } from '@/app/hooks/use-image-upload'
 import { WebcamView } from './ascii-art/webcam-view'
 import { CanvasView } from './ascii-art/canvas-view'
 import { ProcessingOverlay } from './ascii-art/processing-overlay'
-import { cn } from "../lib/utils";
+import { cn } from "../lib/utils"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
+import { ASCIICharSet } from '../lib/ascii-utils'
+import { ConfigPanel } from './ascii-art/config-panel'
 
 interface ItemProps {
   emoji: string;
@@ -67,6 +72,8 @@ const AsciiArtTitle: React.FC = () => {
 export function AsciiArtGenerator() {
   const [isWebcam, setIsWebcam] = useState(false)
   const [canvasWidth, setCanvasWidth] = useState(640)
+  const [colorMode, setColorMode] = useState<'monotone' | 'duotone' | 'colorful'>('colorful')
+  const [charSet, setCharSet] = useState<ASCIICharSet>('standard')
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const {
@@ -85,12 +92,30 @@ export function AsciiArtGenerator() {
     canvasRef,
     isProcessing,
     downloadImage,
-  } = useAsciiArt({ isWebcam, uploadedImage, isImageLoaded, canvasWidth, FIXED_HEIGHT, webcamRef, setCanvasWidth })
+  } = useAsciiArt({ 
+    isWebcam, 
+    uploadedImage, 
+    isImageLoaded, 
+    canvasWidth, 
+    FIXED_HEIGHT, 
+    webcamRef, 
+    setCanvasWidth, 
+    colorMode,
+    charSet  // Add this line
+  })
 
   const triggerFileInput = () => fileInputRef.current?.click()
 
+  const handleColorModeChange = (value: 'monotone' | 'duotone' | 'colorful') => {
+    setColorMode(value)
+  }
+
+  const handleCharSetChange = (value: ASCIICharSet) => {
+    setCharSet(value)
+  }
+
   return (
-    <div className="flex flex-col items-center justify-center  p-4">
+    <div className="flex flex-col items-center justify-center p-4">
       <AsciiArtTitle />
       <div className="relative bg-white rounded-lg shadow-lg overflow-hidden" style={{ width: `${canvasWidth}px`, height: `${FIXED_HEIGHT}px` }}>
         {isWebcam && (
@@ -148,14 +173,24 @@ export function AsciiArtGenerator() {
           </Tooltip>
 
           <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleImageUpload}
-            accept="image/*"
-            className="hidden"
-          />
+        type="file"
+        ref={fileInputRef}
+        onChange={handleImageUpload}
+        accept="image/*"
+        className="hidden"
+      />
+
+          <div className="relative">
+            <ConfigPanel
+              colorMode={colorMode}
+              charSet={charSet}
+              onColorModeChange={handleColorModeChange}
+              onCharSetChange={handleCharSetChange}
+            />
+          </div>
         </div>
       </TooltipProvider>
+      {/* Remove the old UI for color mode and char set selection */}
     </div>
   )
 }

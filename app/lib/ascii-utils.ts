@@ -1,6 +1,19 @@
-const ASCII_CHARS = ['@', '#', 'S', '%', '?', '*', '+', ';', ':', ',', '.']
+type ColorMode = 'monotone' | 'duotone' | 'colorful'
 
-export function applyASCIIEffect(canvas: HTMLCanvasElement) {
+export type ASCIICharSet = 'standard' | 'binary' | 'numeric' | 'symbols'
+
+const ASCII_CHAR_SETS: Record<ASCIICharSet, string[]> = {
+  standard: ['@', '#', 'S', '%', '?', '*', '+', ';', ':', ',', '.'],
+  binary: ['1', '0'],
+  numeric: ['9', '8', '7', '6', '5', '4', '3', '2', '1', '0'],
+  symbols: ['@', '#', '$', '%', '&', '*', '!', '?', '+', '=', '-'],
+}
+
+export function applyASCIIEffect(
+  canvas: HTMLCanvasElement, 
+  colorMode: ColorMode = 'colorful',
+  charSet: ASCIICharSet = 'standard'
+) {
   const ctx = canvas.getContext('2d', { willReadFrequently: true })
   if (ctx && canvas.width > 0 && canvas.height > 0) {
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
@@ -14,13 +27,31 @@ export function applyASCIIEffect(canvas: HTMLCanvasElement) {
       asciiCtx.fillStyle = 'black'
       asciiCtx.fillRect(0, 0, canvas.width, canvas.height)
       
+      const chars = ASCII_CHAR_SETS[charSet]
+      
       for (let y = 0; y < canvas.height; y += 5) {
         for (let x = 0; x < canvas.width; x += 3) {
           const index = (y * canvas.width + x) * 4
           const [r, g, b] = data.slice(index, index + 3)
           const brightness = (r + g + b) / 3
-          const char = ASCII_CHARS[Math.floor(brightness / 25)]
-          asciiCtx.fillStyle = `rgb(${r},${g},${b})`
+          const char = chars[Math.floor((brightness / 255) * (chars.length - 1))]
+          
+          let fillStyle: string
+          switch (colorMode) {
+            case 'monotone':
+              fillStyle = `rgb(${brightness},${brightness},${brightness})`
+              break
+            case 'duotone':
+              const hue = 200 // You can adjust this value for different color schemes
+              fillStyle = `hsl(${hue}, 100%, ${brightness / 2.55}%)`
+              break
+            case 'colorful':
+            default:
+              fillStyle = `rgb(${r},${g},${b})`
+              break
+          }
+          
+          asciiCtx.fillStyle = fillStyle
           asciiCtx.font = '5px monospace'
           asciiCtx.fillText(char, x, y)
         }

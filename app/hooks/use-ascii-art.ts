@@ -1,5 +1,5 @@
-import { useRef, useState, useEffect } from 'react'
-import { applyASCIIEffect } from '@/app/lib/ascii-utils'
+import { useRef, useState, useEffect, useCallback } from 'react'
+import { applyASCIIEffect, ASCIICharSet } from '@/app/lib/ascii-utils'
 import type Webcam from 'react-webcam'
 
 interface UseAsciiArtProps {
@@ -10,9 +10,11 @@ interface UseAsciiArtProps {
   FIXED_HEIGHT: number
   webcamRef: React.RefObject<Webcam>
   setCanvasWidth: React.Dispatch<React.SetStateAction<number>>
+  colorMode: 'monotone' | 'duotone' | 'colorful'
+  charSet: ASCIICharSet
 }
 
-export function useAsciiArt({ isWebcam, uploadedImage, isImageLoaded, canvasWidth, FIXED_HEIGHT, webcamRef, setCanvasWidth }: UseAsciiArtProps) {
+export function useAsciiArt({ isWebcam, uploadedImage, isImageLoaded, canvasWidth, FIXED_HEIGHT, webcamRef, setCanvasWidth, colorMode, charSet }: UseAsciiArtProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [isProcessing, setIsProcessing] = useState(false)
   const [originalImage, setOriginalImage] = useState<HTMLImageElement | null>(null)
@@ -28,13 +30,13 @@ export function useAsciiArt({ isWebcam, uploadedImage, isImageLoaded, canvasWidt
           const ctx = canvas.getContext('2d')
           if (ctx) {
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
-            applyASCIIEffect(canvas)
+            applyASCIIEffect(canvas, colorMode, charSet) // Pass colorMode and charSet here
           }
         }
       }, 100)
       return () => clearInterval(interval)
     }
-  }, [isWebcam])
+  }, [isWebcam, colorMode, charSet]) // Add colorMode and charSet to dependencies
 
   useEffect(() => {
     if (uploadedImage && isImageLoaded) {
@@ -60,11 +62,11 @@ export function useAsciiArt({ isWebcam, uploadedImage, isImageLoaded, canvasWidt
         const ctx = canvas.getContext('2d')
         if (ctx) {
           ctx.drawImage(originalImage, 0, 0, canvasWidth, FIXED_HEIGHT)
-          applyASCIIEffect(canvas)
+          applyASCIIEffect(canvas, colorMode, charSet) // Pass colorMode and charSet here
         }
       }
     }
-  }, [originalImage, canvasWidth, FIXED_HEIGHT])
+  }, [originalImage, canvasWidth, FIXED_HEIGHT, colorMode, charSet]) // Add colorMode and charSet to dependencies
 
   const downloadImage = () => {
     const canvas = canvasRef.current
