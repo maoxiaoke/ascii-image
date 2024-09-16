@@ -24,7 +24,7 @@ interface ItemProps {
   position: string;
 }
 
-const FIXED_HEIGHT = 480
+const FIXED_HEIGHT = 960
 
 const AsciiArtTitle: React.FC = () => {
   const titleItems: ItemProps[] = [
@@ -68,10 +68,10 @@ const AsciiArtTitle: React.FC = () => {
 
 export function AsciiArtGenerator() {
   const [isWebcam, setIsWebcam] = useState(false)
-  const [canvasWidth, setCanvasWidth] = useState(640)
+  const [canvasWidth, setCanvasWidth] = useState(1280) // Changed from 640 to 1280
   const [colorMode, setColorMode] = useState<'monotone' | 'duotone' | 'colorful'>('colorful')
   const [charSet, setCharSet] = useState<ASCIICharSet>('standard')
-  const [isDense, setIsDense] = useState(true)
+  const [isDense, setIsDense] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const {

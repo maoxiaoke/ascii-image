@@ -29,6 +29,7 @@ export function ConfigPanel({
   const panelRef = useRef<HTMLDivElement>(null)
   const dragControls = useDragControls()
 
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (panelRef.current && !panelRef.current.contains(event.target as Node)) {

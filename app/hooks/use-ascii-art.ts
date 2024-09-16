@@ -60,7 +60,7 @@ export function useAsciiArt({
       }
       img.src = uploadedImage
     } else {
-      setCanvasWidth(640)
+      setCanvasWidth(1280)
       setOriginalImage(null)
     }
   }, [uploadedImage, isImageLoaded])

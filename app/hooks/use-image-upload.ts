@@ -18,12 +18,11 @@ export function useImageUpload({ setIsWebcam, setCanvasWidth, FIXED_HEIGHT }: Us
         setUploadedImage(e.target?.result as string)
         setIsWebcam(false)
         setIsImageLoaded(true)
-
         const img = new Image()
         img.onload = () => {
           const aspectRatio = img.width / img.height
           const newWidth = Math.round(FIXED_HEIGHT * aspectRatio)
-          setCanvasWidth(newWidth)
+          setCanvasWidth(Math.min(newWidth, 1280)) // Limit max width to 1280px
         }
         img.src = e.target?.result as string
       }

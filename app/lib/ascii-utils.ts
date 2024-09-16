@@ -3,10 +3,10 @@ type ColorMode = 'monotone' | 'duotone' | 'colorful'
 export type ASCIICharSet = 'standard' | 'binary' | 'numeric' | 'symbols'
 
 const ASCII_CHAR_SETS: Record<ASCIICharSet, string[]> = {
-  standard: ['@', '#', 'S', '%', '?', '*', '+', ';', ':', ',', '.'],
+  standard: ['@', '#', 'S', '%', '?', '*', '+'],
   binary: ['1', '0'],
   numeric: ['9', '8', '7', '6', '5', '4', '3', '2', '1', '0'],
-  symbols: ['@', '#', '$', '%', '&', '*', '!', '?', '+', '=', '-'],
+  symbols: ['@', '#', '$', '%', '&', '*', '!', '?', '+'],
 }
 
 export function applyASCIIEffect(
@@ -29,14 +29,14 @@ export function applyASCIIEffect(
       asciiCtx.fillRect(0, 0, canvas.width, canvas.height)
       
       const chars = ASCII_CHAR_SETS[charSet]
-      const spacing = isDense ? { x: 3, y: 5 } : { x: 6, y: 10 }
+      const spacing = isDense ? { x: 4, y: 8 } : { x: 6, y: 10 }
       
       for (let y = 0; y < canvas.height; y += spacing.y) {
         for (let x = 0; x < canvas.width; x += spacing.x) {
           const index = (y * canvas.width + x) * 4
           const [r, g, b] = data.slice(index, index + 3)
           const brightness = (r + g + b) / 3
-          const char = chars[Math.floor((brightness / 255) * (chars.length - 1))]
+          const char = brightness < 128 ? '@' : chars[Math.floor((brightness / 255) * (chars.length - 1))]
           
           let fillStyle: string
           switch (colorMode) {
@@ -53,9 +53,18 @@ export function applyASCIIEffect(
               break
           }
           
+          asciiCtx.font = `${spacing.y - 2}px monospace`
+          asciiCtx.textAlign = 'center'
+          asciiCtx.textBaseline = 'middle'
+
+          // Draw black outline
+          asciiCtx.strokeStyle = 'white'
+          asciiCtx.lineWidth = 1
+          asciiCtx.strokeText(char, x + spacing.x / 2, y + spacing.y / 2)
+
+          // Draw colored character
           asciiCtx.fillStyle = fillStyle
-          asciiCtx.font = `${spacing.y}px monospace`
-          asciiCtx.fillText(char, x, y)
+          asciiCtx.fillText(char, x + spacing.x / 2, y + spacing.y / 2)
         }
       }
       

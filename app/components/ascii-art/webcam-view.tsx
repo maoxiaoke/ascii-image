@@ -11,10 +11,10 @@ export function WebcamView({ webcamRef, FIXED_HEIGHT }: WebcamViewProps) {
     <Webcam
       ref={webcamRef}
       audio={false}
-      width={640}
+      width={1280}
       height={FIXED_HEIGHT}
       screenshotFormat="image/jpeg"
-      videoConstraints={{ width: 640, height: FIXED_HEIGHT }}
+      videoConstraints={{ width: 1280, height: FIXED_HEIGHT }}
       className="rounded-lg"
     />
   )
